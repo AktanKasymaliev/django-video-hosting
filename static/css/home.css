@@ -1,0 +1,13 @@
+/* #video:hover {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+} */
+
+#video {
+    opacity: 1;
+}
+
+#video:hover {
+    opacity: 0.6;
+}
