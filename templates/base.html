@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">                                 
     <!-- Magnific popup style (http://dimsemenov.com/plugins/magnific-popup/) -->
     <link rel="stylesheet" href="{% static 'css/templatemo-style.css' %}">
+    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
     <!-- Templatemo style -->
     {% block links %}{% endblock links %}
 
@@ -46,7 +47,7 @@
                         <div class="collapse navbar-toggleable-md text-xs-center text-uppercase tm-navbar" id="tmNavbar">
                             <ul class="nav navbar-nav">
                                 <li class="nav-item active selected">
-                                    <a class="nav-link" href="#0" data-no="1">Home <span class="sr-only">(current)</span></a>
+                                    <a class="nav-link" href="{% url 'home' %}" data-no="1">Home <span class="sr-only">(current)</span></a>
                                 </li>
                             </ul>
                         </div>                        
@@ -86,13 +87,13 @@
         
 
         <!-- Preloader, https://ihatetomatoes.net/create-custom-preloading-screen/ -->
-        <!-- <div id="loader-wrapper">
+        <div id="loader-wrapper">
             
             <div id="loader"></div>
             <div class="loader-section section-left"></div>
             <div class="loader-section section-right"></div>
 
-        </div> -->
+        </div>
         
         <!-- load JS files -->
         <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
@@ -103,7 +104,8 @@
         <script src="{% static 'js/hero-slider-main.js' %}"></script>          <!-- Hero slider (https://codyhouse.co/gem/hero-slider/) -->
         <script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>          <!-- Masonry (http://masonry.desandro.com/) -->
         <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script> <!-- Magnific popup (http://dimsemenov.com/plugins/magnific-popup/) -->
-        
+        <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+
         <script>
 
             function adjustHeightOfPage(pageNo) {
@@ -138,22 +140,6 @@
             $(window).load(function(){
 
                 adjustHeightOfPage(1); // Adjust page height
-
-                /* Gallery One pop up
-                -----------------------------------------*/
-                $('.gallery-one').magnificPopup({
-                    delegate: 'a', // child items selector, by clicking on it popup will open
-                    type: 'image',
-                    gallery:{enabled:true}                
-                });
-				
-				/* Gallery Two pop up
-                -----------------------------------------*/
-				$('.gallery-two').magnificPopup({
-                    delegate: 'a',
-                    type: 'image',
-                    gallery:{enabled:true}                
-                });
 
                 /* Collapse menu after click 
                 -----------------------------------------*/
