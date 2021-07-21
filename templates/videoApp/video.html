@@ -3,10 +3,6 @@
 
 {% block title %}<title>VIDEO X</title>{% endblock title %}
 
-{% block links %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock links %}
-
 {% block content %} 
 
 <div class="box">
@@ -27,8 +23,135 @@
         <h1 class="video-title" style="margin-left: 10px; margin-top: 20px;"> {{ video.title }} </h1>
         <h2 class='description' style="margin-left: 50px; margin-top: 30px;">Description:</h2>
         <h2 class='description' style="margin-left: 70px;">{{ video.description }}</h2>
-        <br>
+
+            <br>
+
+        <center>
+            <h1 style="font-family:'Times New Roman', Times, serif;">
+                <img src="{% static 'img/comments.gif' %}"/ 
+                width="30px" height="25px">
+                Comments: {{ comments.count }}
+            </h1>
+        </center>
+            <hr>
+
+        {% if comments %}
+
+        <div class="box">
+            <div id="comment-messages" style="max-height: 300px; overflow-y: scroll;">
+                {% for m in messages %}<b>{{ m.username }}</b>: {{ m.message }}<br>{% endfor %}
+            </div>
+        </div>
+            <hr>
+            <div class="for-margin" style="margin-left: 20px;">
+                <div class="field">
+                    <label>Username</label>
+
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Username" id="username-input">
+                    </div>
+                </div>
+                
+                <div class="column is-4 is-offset-4">
+                    <div class="field">
+                        <label>Message</label>
+
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Message" id="message-input">
+                        </div>
+                    </div>
+                        <br>
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class='btn-btn primary' id='btn-submit'>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <h1 style="text-align: center;">No comments</h1>
+
+                <hr>
+            <div class="for-margin" style="margin-left: 20px;">
+                <div class="field">
+                    <label>Username</label>
+
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Username" id="username-input">
+                    </div>
+                </div>
+                
+                <div class="column is-4 is-offset-4">
+                    <div class="field">
+                        <label>Message</label>
+
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Message" id="message-input">
+                        </div>
+                    </div>
+                        <br>
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class='btn-btn primary' id="btn-submit">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        {% endif %}
+
+            <br>
     </div>
 </div>
 
 {% endblock content %}
+
+{% block script %} 
+
+<script>
+    document.querySelector('#username-input').focus();
+
+    // WebSocket //
+    const commentSocket = new WebSocket(
+        "ws://"
+        +window.location.host
+        +"/ws/"
+        +"video/"
+        +parseInt("{{ video.pk }}")
+        +"/"
+    )
+
+    commentSocket.onmessage = function(e) {
+
+                const data = JSON.parse(e.data);
+
+                if (data.message) {
+                    document.querySelector('#comment-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+                } else {
+                    alert('The message is empty!');
+                }
+
+            };
+
+    commentSocket.onclose = function(e) {
+                console.log('The socket close unexpectadly');
+            };
+
+    
+
+    // On click //
+    document.querySelector('#btn-submit').onclick = function(e) {
+        e.preventDefault()
+        var message = document.querySelector('#message-input').value;
+        var userName = document.querySelector('#username-input').value;
+        commentSocket.send(JSON.stringify({
+                    'message': message,
+                    'username': userName,
+                }));
+
+        message.value = '';
+        
+    };
+</script>
+
+{% endblock script %}

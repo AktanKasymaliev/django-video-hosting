@@ -15,9 +15,31 @@
             <img id='video' src="{{ video.image.url }}" 
             style="outline: 3px solid #000" 
             width="300px" height="190px">   
-            <strong><p style="margin-left: 20px;">{{ video.title|slice:":35" }}</p></strong>                                 
+            <strong><p style="margin-left: 20px;">{{ video.title|slice:":20" }}...</p></strong>                                 
         </a>
     </div>  
     {% endfor %} 
+    
+    <div id='pagination' style="margin-left: 660px; margin-top: 20px;">
+        <nav aria-label="Page navigation example">
+            {% if videos.has_other_pages %}
+            <ul class="pagination">
+              {% if videos.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ videos.previous_page_number }}">Предыдущая</a></li>
+              {% endif %}
+              {% for i in videos.paginator.page_range %}
+                {% if videos.number == i %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% elif i >  videos.number|add:-2 and i < videos.number|add:2 %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% if videos.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ videos.next_page_number }}">Следующая</a></li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
+        </div>
 
 {% endblock content %}
