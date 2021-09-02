@@ -18,11 +18,15 @@ pip install -r requirements.txt
 
 * Create a file settings.ini on self project level, copy under text, and add your value: 
 ```
-SECRET_KEY = 
-DEBUG = 
-DB_PASSWORD = 
-DB_USER = 
-DB_NAME = 
+[SYSTEM]
+DJANGO_KEY = $key$
+DEBUG = True
+[DATABASE]
+PASSWORD = password
+USER = user
+NAME = dbName
+HOST=localhost
+PORT=5432
 ```
 
 * This project working on Postgresql, so install him:
